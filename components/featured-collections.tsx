@@ -1,3 +1,5 @@
+"use client"
+
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
@@ -13,6 +15,8 @@ const collections = [
         image: "/cartoon-fairy-tale-princess-sunflower.jpg",
         style: "水彩风格",
         ageRange: "4-6岁",
+        category: "fairy-tales",
+        categoryLabel: "童话故事",
       },
       {
         id: "2",
@@ -20,6 +24,8 @@ const collections = [
         image: "/cartoon-fairy-tale-golden-princess.jpg",
         style: "卡通风格",
         ageRange: "5-7岁",
+        category: "fairy-tales",
+        categoryLabel: "童话故事",
       },
       {
         id: "3",
@@ -27,6 +33,8 @@ const collections = [
         image: "/cartoon-fairy-tale-tiny-boy.jpg",
         style: "漫画风格",
         ageRange: "6-8岁",
+        category: "fairy-tales",
+        categoryLabel: "童话故事",
       },
       {
         id: "4",
@@ -34,6 +42,8 @@ const collections = [
         image: "/cartoon-fairy-tale-window-pattern.jpg",
         style: "插画风格",
         ageRange: "4-7岁",
+        category: "fairy-tales",
+        categoryLabel: "童话故事",
       },
     ],
   },
@@ -46,6 +56,8 @@ const collections = [
         image: "/cartoon-children-diversity-family.jpg",
         style: "卡通风格",
         ageRange: "3-5岁",
+        category: "traditional",
+        categoryLabel: "传统文化",
       },
       {
         id: "6",
@@ -53,6 +65,8 @@ const collections = [
         image: "/cartoon-children-pottery-batik.jpg",
         style: "写实风格",
         ageRange: "7-9岁",
+        category: "traditional",
+        categoryLabel: "传统文化",
       },
       {
         id: "7",
@@ -60,6 +74,8 @@ const collections = [
         image: "/cartoon-children-river-nature.jpg",
         style: "水彩风格",
         ageRange: "5-8岁",
+        category: "nature",
+        categoryLabel: "自然环境",
       },
       {
         id: "8",
@@ -67,16 +83,29 @@ const collections = [
         image: "/cartoon-children-traditional-tales.jpg",
         style: "插画风格",
         ageRange: "4-6岁",
+        category: "traditional",
+        categoryLabel: "传统文化",
       },
     ],
   },
 ]
 
-export function FeaturedCollections() {
+interface FeaturedCollectionsProps {
+  selectedCategory?: string
+}
+
+export function FeaturedCollections({ selectedCategory = "all" }: FeaturedCollectionsProps) {
+  const filteredCollections = collections
+    .map((collection) => ({
+      ...collection,
+      books: collection.books.filter((book) => selectedCategory === "all" || book.category === selectedCategory),
+    }))
+    .filter((collection) => collection.books.length > 0)
+
   return (
     <section className="py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4">
-        {collections.map((collection, idx) => (
+        {filteredCollections.map((collection, idx) => (
           <div key={idx} className="mb-12 md:mb-16">
             <div className="flex items-center justify-between mb-6 md:mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">{collection.title}</h2>
@@ -105,7 +134,10 @@ export function FeaturedCollections() {
                       <h3 className="text-xs md:text-sm font-medium text-foreground line-clamp-2 text-balance mb-1 md:mb-2">
                         {book.title}
                       </h3>
-                      <div className="flex items-center gap-1">
+                      <div className="flex flex-wrap items-center gap-1">
+                        <span className="text-[10px] md:text-xs text-primary bg-primary/10 px-1.5 md:px-2 py-0.5 rounded font-medium">
+                          {book.categoryLabel}
+                        </span>
                         <span className="text-[10px] md:text-xs text-muted-foreground bg-muted px-1.5 md:px-2 py-0.5 rounded">
                           {book.ageRange}
                         </span>

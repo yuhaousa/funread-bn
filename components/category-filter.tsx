@@ -17,8 +17,17 @@ const categories = [
   { id: "education", label: "学习启蒙", value: "education" },
 ]
 
-export function CategoryFilter() {
+interface CategoryFilterProps {
+  onCategoryChange?: (category: string) => void
+}
+
+export function CategoryFilter({ onCategoryChange }: CategoryFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState("all")
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    onCategoryChange?.(category)
+  }
 
   return (
     <div className="py-12 bg-background/50">
@@ -28,7 +37,7 @@ export function CategoryFilter() {
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setSelectedCategory(category.value)}
+              onClick={() => handleCategoryChange(category.value)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                 selectedCategory === category.value
                   ? "bg-primary text-primary-foreground shadow-md"
