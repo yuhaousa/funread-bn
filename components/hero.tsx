@@ -3,36 +3,47 @@
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
+import { useLanguage } from "@/lib/language-context"
+import { LanguageToggle } from "@/components/language-toggle"
 
 const slides = [
   {
-    title: "奇妙的海洋世界",
-    description: "探索我们海洋的精彩世界！",
+    title: { zh: "奇妙的海洋世界", en: "Wonderful Ocean World" },
+    description: { zh: "探索我们海洋的精彩世界！", en: "Explore the fascinating world of our oceans!" },
     image: "/cartoon-ocean-underwater-scene.jpg",
     alt: "Ocean background",
+    textColor: "text-cyan-300",
+    descColor: "text-cyan-100",
   },
   {
-    title: "神奇的动物王国",
-    description: "认识可爱的森林小伙伴们",
+    title: { zh: "神奇的动物王国", en: "Magical Animal Kingdom" },
+    description: { zh: "认识可爱的森林小伙伴们", en: "Meet adorable forest friends" },
     image: "/cartoon-forest-animals-scene.jpg",
     alt: "Forest animals background",
+    textColor: "text-lime-300",
+    descColor: "text-lime-100",
   },
   {
-    title: "美妙的太空冒险",
-    description: "一起飞向星辰大海！",
+    title: { zh: "美妙的太空冒险", en: "Amazing Space Adventure" },
+    description: { zh: "一起飞向星辰大海！", en: "Let's fly to the stars!" },
     image: "/cartoon-space-adventure-scene.jpg",
     alt: "Space adventure background",
+    textColor: "text-violet-300",
+    descColor: "text-violet-100",
   },
   {
-    title: "快乐的农场生活",
-    description: "体验温馨的田园时光",
+    title: { zh: "快乐的农场生活", en: "Happy Farm Life" },
+    description: { zh: "体验温馨的田园时光", en: "Experience warm countryside moments" },
     image: "/cartoon-farm-countryside-scene.jpg",
     alt: "Farm countryside background",
+    textColor: "text-amber-300",
+    descColor: "text-amber-100",
   },
 ]
 
 export function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const { t } = useLanguage()
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length)
@@ -49,9 +60,14 @@ export function Hero() {
   return (
     <section className="relative bg-gradient-to-b from-primary/10 to-background">
       <div className="container mx-auto px-4 py-8 md:py-12 lg:py-20">
-        {/* Logo */}
-        <div className="flex justify-center mb-6 md:mb-8">
-          <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">让我们一起阅读</div>
+        {/* Logo and language toggle row */}
+        <div className="flex justify-center items-center mb-6 md:mb-8 relative">
+          <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+            {t({ zh: "让我们一起阅读", en: "Let's Read Together" })}
+          </div>
+          <div className="absolute right-0">
+            <LanguageToggle />
+          </div>
         </div>
 
         {/* Hero Carousel */}
@@ -67,14 +83,18 @@ export function Hero() {
             </div>
 
             <div className="relative z-10">
-              <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold text-primary-foreground mb-3 md:mb-4 text-balance">
-                {slides[currentSlide].title}
+              <h1
+                className={`text-2xl md:text-4xl lg:text-6xl font-bold ${slides[currentSlide].textColor} mb-3 md:mb-4 text-balance drop-shadow-lg`}
+              >
+                {t(slides[currentSlide].title)}
               </h1>
-              <p className="text-base md:text-lg lg:text-xl text-primary-foreground/90 mb-4 md:mb-6 text-balance">
-                {slides[currentSlide].description}
+              <p
+                className={`text-base md:text-lg lg:text-xl ${slides[currentSlide].descColor} mb-4 md:mb-6 text-balance drop-shadow-md`}
+              >
+                {t(slides[currentSlide].description)}
               </p>
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm md:text-base">
-                立即阅读
+                {t({ zh: "立即阅读", en: "Read Now" })}
               </Button>
             </div>
 

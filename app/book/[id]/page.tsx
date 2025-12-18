@@ -5,44 +5,70 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import Link from "next/link"
+import { useLanguage } from "@/lib/language-context"
+import { LanguageToggle } from "@/components/language-toggle"
 
-// Sample book data
-const bookData: Record<string, { title: string; pages: Array<{ image: string; text: string }> }> = {
+// Sample book data with English translations
+const bookData: Record<
+  string,
+  { title: { zh: string; en: string }; pages: Array<{ image: string; text: { zh: string; en: string } }> }
+> = {
   "1": {
-    title: "公主与太阳花",
+    title: { zh: "公主与太阳花", en: "Princess and Sunflower" },
     pages: [
       {
         image: "/cartoon-boy-cleaning-toys-room.jpg",
-        text: 'Dara walked into their room and asked Sokha what he was doing. "Cleaning out my old baby toys to give to you," responded Sokha. "I\'ve got adult stuff to do now, I\'m going to go read my medical books with mum."',
+        text: {
+          zh: '达拉走进房间，问索卡在做什么。"把我的旧婴儿玩具整理出来给你，"索卡回答。"我现在有大人的事情要做了，我要和妈妈一起看医学书。"',
+          en: 'Dara walked into their room and asked Sokha what he was doing. "Cleaning out my old baby toys to give to you," responded Sokha. "I\'ve got adult stuff to do now, I\'m going to go read my medical books with mum."',
+        },
       },
       {
         image: "/cartoon-girl-playing-with-colorful-toys.jpg",
-        text: "Dara looked at the box full of toys. There were cars, blocks, and stuffed animals. She smiled and started to play with them.",
+        text: {
+          zh: "达拉看着满满一箱玩具。里面有小汽车、积木和毛绒动物。她笑了，开始玩了起来。",
+          en: "Dara looked at the box full of toys. There were cars, blocks, and stuffed animals. She smiled and started to play with them.",
+        },
       },
       {
         image: "/cartoon-mother-child-reading-books.jpg",
-        text: "Meanwhile, Sokha sat with his mother, carefully reading the medical books. He wanted to learn everything he could.",
+        text: {
+          zh: "与此同时，索卡和妈妈坐在一起，认真地读着医学书籍。他想学到一切知识。",
+          en: "Meanwhile, Sokha sat with his mother, carefully reading the medical books. He wanted to learn everything he could.",
+        },
       },
       {
         image: "/cartoon-siblings-playing-happily.jpg",
-        text: "Later that day, Dara asked Sokha to play with her. He realized that growing up doesn't mean leaving all fun behind.",
+        text: {
+          zh: "那天晚些时候，达拉请索卡和她一起玩。他意识到，长大并不意味着要抛弃所有的乐趣。",
+          en: "Later that day, Dara asked Sokha to play with her. He realized that growing up doesn't mean leaving all fun behind.",
+        },
       },
     ],
   },
   "2": {
-    title: "金发公主",
+    title: { zh: "金发公主", en: "Golden Princess" },
     pages: [
       {
         image: "/cartoon-princess-golden-hair-castle.jpg",
-        text: "从前,有一位美丽的金发公主住在高高的城堡里。她的头发如同阳光般闪耀。",
+        text: {
+          zh: "从前，有一位美丽的金发公主住在高高的城堡里。她的头发如同阳光般闪耀。",
+          en: "Once upon a time, there was a beautiful golden-haired princess who lived in a tall castle. Her hair shone like sunlight.",
+        },
       },
       {
         image: "/cartoon-princess-window-sunrise.jpg",
-        text: "每天清晨,公主都会站在窗前,看着太阳从东方升起,照亮整个王国。",
+        text: {
+          zh: "每天清晨，公主都会站在窗前，看着太阳从东方升起，照亮整个王国。",
+          en: "Every morning, the princess would stand by her window, watching the sun rise from the east, illuminating the entire kingdom.",
+        },
       },
       {
         image: "/cartoon-princess-garden-flowers.jpg",
-        text: "她喜欢在花园里散步,和小鸟们说话,照顾美丽的花朵。",
+        text: {
+          zh: "她喜欢在花园里散步，和小鸟们说话，照顾美丽的花朵。",
+          en: "She loved walking in the garden, talking to the birds, and caring for the beautiful flowers.",
+        },
       },
     ],
   },
@@ -51,6 +77,7 @@ const bookData: Record<string, { title: string; pages: Array<{ image: string; te
 export default function BookPage({ params }: { params: { id: string } }) {
   const book = bookData[params.id] || bookData["1"]
   const [currentPage, setCurrentPage] = useState(0)
+  const { t } = useLanguage()
 
   const goToNextPage = () => {
     if (currentPage < book.pages.length - 1) {
@@ -75,10 +102,10 @@ export default function BookPage({ params }: { params: { id: string } }) {
         <div className="container mx-auto px-3 md:px-4 py-3 md:py-4 flex items-center justify-between">
           <Link href="/" className="text-primary hover:text-primary/80 flex items-center gap-1 md:gap-2">
             <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
-            <span className="font-medium text-sm md:text-base">返回</span>
+            <span className="font-medium text-sm md:text-base">{t({ zh: "返回", en: "Back" })}</span>
           </Link>
-          <h1 className="text-sm md:text-lg font-bold text-foreground text-center flex-1 px-2">{book.title}</h1>
-          <div className="w-12 md:w-24" />
+          <h1 className="text-sm md:text-lg font-bold text-foreground text-center flex-1 px-2">{t(book.title)}</h1>
+          <LanguageToggle />
         </div>
       </header>
 
@@ -122,7 +149,7 @@ export default function BookPage({ params }: { params: { id: string } }) {
             {/* Text */}
             <div className="prose prose-base md:prose-lg max-w-none px-2 md:px-0">
               <p className="text-foreground/90 leading-relaxed text-center text-pretty text-sm md:text-base">
-                {book.pages[currentPage].text}
+                {t(book.pages[currentPage].text)}
               </p>
             </div>
           </div>
