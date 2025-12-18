@@ -1,8 +1,6 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useLanguage } from "@/lib/language-context"
 
@@ -110,15 +108,6 @@ export function FeaturedCollections({ selectedCategory = "all" }: FeaturedCollec
       <div className="container mx-auto px-4">
         {filteredCollections.map((collection, idx) => (
           <div key={idx} className="mb-12 md:mb-16">
-            <div className="flex items-center justify-between mb-6 md:mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground">{t(collection.title)}</h2>
-              <Button variant="ghost" className="text-primary hover:text-primary/80 text-sm md:text-base">
-                <span className="hidden sm:inline">{t({ zh: "查看全部", en: "View All" })}</span>
-                <span className="sm:hidden">{t({ zh: "全部", en: "All" })}</span>
-                <ArrowRight className="ml-1 md:ml-2 h-3 w-3 md:h-4 md:w-4" />
-              </Button>
-            </div>
-
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-6">
               {collection.books.map((book, bookIdx) => (
                 <Link key={bookIdx} href={`/book/${book.id}`}>

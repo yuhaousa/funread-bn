@@ -30,10 +30,10 @@ export function CategoryFilter({ onCategoryChange }: CategoryFilterProps) {
   }
 
   return (
-    <div className="py-12 bg-background/50">
-      <div className="container">
+    <div className="py-12 bg-background/50 flex flex-col items-center">
+      <div className="w-full max-w-6xl px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-balance">浏览图书分类</h2>
-        <div className="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
+        <div className="flex flex-wrap gap-3 justify-center items-center mx-auto">
           {categories.map((category) => (
             <button
               key={category.id}
